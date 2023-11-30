@@ -1,5 +1,5 @@
-github.com/sampgo/command v0.0.0-20210419180340-59cbe04f2fd6 h1:W/0NIFSKDOBAJ2x+3i72lYZMGXw/JVT05qrMRGHmjZg=
-github.com/sampgo/command v0.0.0-20210419180340-59cbe04f2fd6/go.mod h1:T0us1EZexCMOpKdMfrAIkLWzK4xqfcvLvQ5NKGg/sIU=
+github.com/MikMik1011/gommand v0.0.0-20231130182643-5787a4a0dc3a h1:ArlNoVh6ozcFPS4VYxwdF6SPlN4fhvOdahZnQgfhX9c=
+github.com/MikMik1011/gommand v0.0.0-20231130182643-5787a4a0dc3a/go.mod h1:F1akhKnqpA2c1ERitdsE9mibMcfNdtoCzkfQRcwDQ4Q=
 github.com/sampgo/sampgo v0.0.0-20200920194748-bb8ec99b20ab/go.mod h1:RxPIaAhBjDhg+sACPV864uKVUSpC2U7oC286I4rtGjg=
 github.com/sampgo/sampgo v0.0.0-20210529175649-7aab11d5888a h1:gzrwd2kjTjtDpyoK+uDZ4GkUaQRbONFuT/ZelHVD58M=
 github.com/sampgo/sampgo v0.0.0-20210529175649-7aab11d5888a/go.mod h1:yPxlShzps37lds26FgU90//aSoffnrTYusz80QGX+2U=

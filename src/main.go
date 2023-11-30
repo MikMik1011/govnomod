@@ -5,31 +5,30 @@ import (
 	"math/rand"
 	"strconv"
 
-	"github.com/sampgo/command"
+	"github.com/MikMik1011/gommand"
 	"github.com/sampgo/sampgo"
 )
 
 func init() {
 	sampgo.Print("go init() called")
-
 	sampgo.On("goModeInit", func() bool {
-		sampgo.Print("Hello from Go!")
-		cmd := command.NewCommand(command.Command{Name: "foo", Prefix: "!"})
-		cmd.Handle(func(ctx command.Context) (err error) {
+		gommand.SetCommandNotFound(0xFF0000, "[TVOJA MAMA] Command not found!")
+		cmd := gommand.NewCommand(gommand.Command{Name: "foo", Prefix: "!"})
+		cmd.Handle(func(ctx gommand.Context) (err error) {
 			ctx.Player.SendMessage(0xFFFFFF, "Hello from Go!")
 			return
 		})
 
-		vehCMD := command.NewCommand(command.Command{Name: "vehicle", Alias: []string{"v", "veh"}})
-		vehCMD.Handle(func(ctx command.Context) (err error) {
+		vehCMD := gommand.NewCommand(gommand.Command{Name: "vehicle", Alias: []string{"v", "veh"}})
+		vehCMD.Handle(func(ctx gommand.Context) (err error) {
 			if len(ctx.Args) < 1 {
-				ctx.Player.SendMessage(0xFF0000, "Usage: /vehicle <id>")
+				ctx.Player.SendMessage(0x0000FF, "Usage: /vehicle <id>")
 				return
 			}
 			plX, plY, plZ, err := ctx.Player.GetPos()
 			id, err := strconv.Atoi(ctx.Args[0])
 			if err != nil {
-				ctx.Player.SendMessage(0xFF0000, "[ERROR] Invalid vehicle ID!")
+				ctx.Player.SendMessage(0x0000FF, "[ERROR] Invalid vehicle ID!")
 				return
 			}
 			veh := sampgo.CreateVehicle(id, plX, plY, plZ, 0, rand.Intn(256), rand.Intn(256), 30, true)
@@ -40,8 +39,8 @@ func init() {
 			return
 		})
 
-		delVehCMD := command.NewCommand(command.Command{Name: "deletevehicle", Alias: []string{"dv", "delveh"}})
-		delVehCMD.Handle(func(ctx command.Context) (err error) {
+		delVehCMD := gommand.NewCommand(gommand.Command{Name: "deletevehicle", Alias: []string{"dv", "delveh"}})
+		delVehCMD.Handle(func(ctx gommand.Context) (err error) {
 			vehID := sampgo.GetPlayerVehicleID(ctx.Player.ID)
 			sampgo.DestroyVehicle(vehID)
 			msg := fmt.Sprintf("Vehicle id %d destroyed", vehID)
@@ -50,8 +49,8 @@ func init() {
 			return
 		})
 
-		weaponCMD := command.NewCommand(command.Command{Name: "weapon", Alias: []string{"w", "wep"}})
-		weaponCMD.Handle(func(ctx command.Context) (err error) {
+		weaponCMD := gommand.NewCommand(gommand.Command{Name: "weapon", Alias: []string{"w", "wep"}})
+		weaponCMD.Handle(func(ctx gommand.Context) (err error) {
 			if len(ctx.Args) < 1 {
 				ctx.Player.SendMessage(0xFF0000, "Usage: /weapon <id>")
 				return
@@ -67,7 +66,7 @@ func init() {
 			ctx.Player.SendMessage(0xFFFFFF, msg)
 			return
 		})
-
+		sampgo.Print("commands registered!")
 		return true
 	})
 
