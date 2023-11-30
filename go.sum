@@ -1,5 +1,10 @@
-github.com/MikMik1011/gommand v0.0.0-20231130182643-5787a4a0dc3a h1:ArlNoVh6ozcFPS4VYxwdF6SPlN4fhvOdahZnQgfhX9c=
-github.com/MikMik1011/gommand v0.0.0-20231130182643-5787a4a0dc3a/go.mod h1:F1akhKnqpA2c1ERitdsE9mibMcfNdtoCzkfQRcwDQ4Q=
+github.com/MikMik1011/gommand v0.0.0-20231130225014-93cdeb7a0a70 h1:yo5e4ke5Vnme0OqUrxKv6Zo46lc3uK9Bt5rMPIyRQkk=
+github.com/MikMik1011/gommand v0.0.0-20231130225014-93cdeb7a0a70/go.mod h1:F1akhKnqpA2c1ERitdsE9mibMcfNdtoCzkfQRcwDQ4Q=
+github.com/MikMik1011/gommand v0.0.0-20231130225735-6eab077e321f h1:wSkSIZHIRD2YSQAPkqMZxmwqlR0ZlOeLx56P6tNh0no=
+github.com/MikMik1011/gommand v0.0.0-20231130225735-6eab077e321f/go.mod h1:F1akhKnqpA2c1ERitdsE9mibMcfNdtoCzkfQRcwDQ4Q=
+github.com/MikMik1011/gommand v0.0.0-20231130232801-69ebefbaf34f h1:dj2It8yLJjqZYT+BOWfYfpno5o3UMtoOI+qEtoEA3R4=
+github.com/MikMik1011/gommand v0.0.0-20231130232801-69ebefbaf34f/go.mod h1:F1akhKnqpA2c1ERitdsE9mibMcfNdtoCzkfQRcwDQ4Q=
+github.com/sampgo/sampgo v0.0.0-20200920194748-bb8ec99b20ab h1:n2thxUgah/C8lN455H7+vgM/sz6Jx1EMEhIEywP3/jk=
 github.com/sampgo/sampgo v0.0.0-20200920194748-bb8ec99b20ab/go.mod h1:RxPIaAhBjDhg+sACPV864uKVUSpC2U7oC286I4rtGjg=
 github.com/sampgo/sampgo v0.0.0-20210529175649-7aab11d5888a h1:gzrwd2kjTjtDpyoK+uDZ4GkUaQRbONFuT/ZelHVD58M=
 github.com/sampgo/sampgo v0.0.0-20210529175649-7aab11d5888a/go.mod h1:yPxlShzps37lds26FgU90//aSoffnrTYusz80QGX+2U=

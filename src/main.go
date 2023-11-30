@@ -19,57 +19,58 @@ func init() {
 
 		gommand.SetCommandNotFound(ColorWhite, "[TVOJA MAMA] Command not found!")
 
-		vehCMD := gommand.NewCommand(gommand.Command{Name: "vehicle", Alias: []string{"v", "veh"}})
-		vehCMD.Handle(func(ctx gommand.Context) (err error) {
-			if len(ctx.Args) < 1 {
-				ctx.Player.SendMessage(ColorRed, "Usage: /vehicle <id>")
-				return
-			}
-			plX, plY, plZ, err := ctx.Player.GetPos()
-			id, err := strconv.Atoi(ctx.Args[0])
-			if err != nil {
-				ctx.Player.SendMessage(ColorRed, "[ERROR] Invalid vehicle ID!")
-				return
-			}
-			veh := sampgo.CreateVehicle(id, plX, plY, plZ, 0, rand.Intn(256), rand.Intn(256), 30, true)
-			if veh == sampgo.InvalidVehicleId {
-				ctx.Player.SendMessage(ColorRed, "Unable to spawn car!")
-			}
-			sampgo.PutPlayerInVehicle(ctx.Player.ID, veh, 0)
-			msg := fmt.Sprintf("Vehicle id %d created", veh)
-			sampgo.Print(msg)
-			ctx.Player.SendMessage(ColorWhite, msg)
+		gommand.NewCompleteCommand("vehicle", []string{"v", "veh"},
+			func(ctx gommand.Context) (err error) {
+				if len(ctx.Args) < 1 {
+					ctx.Player.SendMessage(ColorRed, "Usage: /vehicle <id>")
+					return
+				}
+				plX, plY, plZ, err := ctx.Player.GetPos()
+				id, err := strconv.Atoi(ctx.Args[0])
+				if err != nil {
+					ctx.Player.SendMessage(ColorRed, "[ERROR] Invalid vehicle ID!")
+					return
+				}
+				veh := sampgo.CreateVehicle(id, plX, plY, plZ, 0, rand.Intn(256), rand.Intn(256), 30, true)
+				if veh == sampgo.InvalidVehicleId {
+					ctx.Player.SendMessage(ColorRed, "Unable to spawn car!")
+				}
+				sampgo.PutPlayerInVehicle(ctx.Player.ID, veh, 0)
+				msg := fmt.Sprintf("Vehicle id %d created", veh)
+				sampgo.Print(msg)
+				ctx.Player.SendMessage(ColorWhite, msg)
 
-			return
-		})
-
-		delVehCMD := gommand.NewCommand(gommand.Command{Name: "deletevehicle", Alias: []string{"dv", "delveh"}})
-		delVehCMD.Handle(func(ctx gommand.Context) (err error) {
-			vehID := sampgo.GetPlayerVehicleID(ctx.Player.ID)
-			sampgo.DestroyVehicle(vehID)
-			msg := fmt.Sprintf("Vehicle id %d destroyed", vehID)
-			sampgo.Print(msg)
-			ctx.Player.SendMessage(ColorWhite, msg)
-			return
-		})
-
-		weaponCMD := gommand.NewCommand(gommand.Command{Name: "weapon", Alias: []string{"w", "wep"}})
-		weaponCMD.Handle(func(ctx gommand.Context) (err error) {
-			if len(ctx.Args) < 1 {
-				ctx.Player.SendMessage(ColorRed, "Usage: /weapon <id>")
 				return
-			}
-			weaponID, err := strconv.Atoi(ctx.Args[0])
-			if err != nil {
-				ctx.Player.SendMessage(ColorRed, "[ERROR] Invalid weapon ID!")
+			})
+
+		gommand.NewCompleteCommand("deletevehicle", []string{"dv", "delveh"},
+			func(ctx gommand.Context) (err error) {
+				vehID := sampgo.GetPlayerVehicleID(ctx.Player.ID)
+				sampgo.DestroyVehicle(vehID)
+				msg := fmt.Sprintf("Vehicle id %d destroyed", vehID)
+				sampgo.Print(msg)
+				ctx.Player.SendMessage(ColorWhite, msg)
 				return
-			}
-			sampgo.GivePlayerWeapon(ctx.Player.ID, weaponID, 10000)
-			msg := fmt.Sprintf("Weapon id %d given", weaponID)
-			sampgo.Print(msg)
-			ctx.Player.SendMessage(ColorWhite, msg)
-			return
-		})
+			})
+
+		gommand.NewCompleteCommand("weapon", []string{"w", "wep"},
+			func(ctx gommand.Context) (err error) {
+				if len(ctx.Args) < 1 {
+					ctx.Player.SendMessage(ColorRed, "Usage: /weapon <id>")
+					return
+				}
+				weaponID, err := strconv.Atoi(ctx.Args[0])
+				if err != nil {
+					ctx.Player.SendMessage(ColorRed, "[ERROR] Invalid weapon ID!")
+					return
+				}
+				sampgo.GivePlayerWeapon(ctx.Player.ID, weaponID, 10000)
+				msg := fmt.Sprintf("Weapon id %d given", weaponID)
+				sampgo.Print(msg)
+				ctx.Player.SendMessage(ColorWhite, msg)
+				return
+			})
+
 		sampgo.Print("commands registered!")
 		return true
 	})
