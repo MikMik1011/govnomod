@@ -20,8 +20,7 @@ func init() {
 			return
 		})
 
-		vehCMD := command.NewCommand(command.Command{Name: "vehicle", Prefix: ""})
-		//vehCMD.SetAlias("v").SetAlias("veh")
+		vehCMD := command.NewCommand(command.Command{Name: "vehicle", Alias: []string{"v", "veh"}})
 		vehCMD.Handle(func(ctx command.Context) (err error) {
 			if len(ctx.Args) < 1 {
 				ctx.Player.SendMessage(0xFF0000, "Usage: /vehicle <id>")
@@ -41,8 +40,7 @@ func init() {
 			return
 		})
 
-		delVehCMD := command.NewCommand(command.Command{Name: "deletevehicle", Prefix: ""})
-		//delVehCMD.SetAlias("dv").SetAlias("delveh")
+		delVehCMD := command.NewCommand(command.Command{Name: "deletevehicle", Alias: []string{"dv", "delveh"}})
 		delVehCMD.Handle(func(ctx command.Context) (err error) {
 			vehID := sampgo.GetPlayerVehicleID(ctx.Player.ID)
 			sampgo.DestroyVehicle(vehID)
@@ -52,8 +50,7 @@ func init() {
 			return
 		})
 
-		weaponCMD := command.NewCommand(command.Command{Name: "weapon", Prefix: ""})
-		//vehCMD.SetAlias("w").SetAlias("wep")
+		weaponCMD := command.NewCommand(command.Command{Name: "weapon", Alias: []string{"w", "wep"}})
 		weaponCMD.Handle(func(ctx command.Context) (err error) {
 			if len(ctx.Args) < 1 {
 				ctx.Player.SendMessage(0xFF0000, "Usage: /weapon <id>")
