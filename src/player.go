@@ -9,11 +9,11 @@ import (
 type Roleplayer struct {
 	Money int `json:"money"`
 	Exp   int `json:"exp"`
-	ID    int `json:"id"`
+	ID    int
 }
 
-func Test() {
-	sampgo.Print("Test")
+func (r *Roleplayer) SetID(id int) {
+	r.ID = id
 }
 
 func (r *Roleplayer) GetMoney() int {

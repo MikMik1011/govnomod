@@ -4,15 +4,61 @@ import (
 	"encoding/json"
 	"fmt"
 	"math/rand"
+	"os"
 	"strconv"
 
 	"github.com/MikMik1011/gommand"
 	"github.com/sampgo/sampgo"
 )
 
+var (
+	players = make(map[string]*Roleplayer)
+)
+
+func writeJSONToFile(data *map[string]*Roleplayer, filePath string) error {
+	// Convert map to JSON
+	jsonData, err := json.MarshalIndent(*data, "", "    ")
+	if err != nil {
+		return err
+	}
+
+	// Write JSON data to file
+	err = os.WriteFile(filePath, jsonData, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+
+	fmt.Println("Data written to", filePath)
+	return nil
+}
+
+func readJSONFromFile(filePath string) (map[string]*Roleplayer, error) {
+	// Read JSON data from file
+	jsonData, err := os.ReadFile(filePath)
+	if err != nil {
+		data := make(map[string]*Roleplayer)
+		return data, err
+	}
+
+	// Unmarshal JSON data into map
+	var data map[string]*Roleplayer
+	err = json.Unmarshal(jsonData, &data)
+	if err != nil {
+		data = make(map[string]*Roleplayer)
+		return data, err
+	}
+	return data, nil
+}
+
 func init() {
-	Test()
-	players := make(map[int]*Roleplayer)
+	players, err := readJSONFromFile("data/players.json")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	json, _ := json.Marshal(players)
+	sampgo.Print(string(json))
 
 	sampgo.Print("go init() called")
 	sampgo.On("goModeInit", func() bool {
@@ -103,6 +149,7 @@ func init() {
 
 	sampgo.On("goModeExit", func() bool {
 		sampgo.Print("goModeExit!")
+		writeJSONToFile(&players, "data/players.json")
 		return true
 	})
 
@@ -110,15 +157,20 @@ func init() {
 		sampgo.Print(fmt.Sprintf("Player %s connected!", p.GetName()))
 		sampgo.Print(fmt.Sprintf("Player ID is %d", p.ID))
 		p.SendMessage(ColorWhite, "izes mi kurac!")
-		players[p.ID] = &Roleplayer{Money: 1000, Exp: rand.Intn(10), ID: p.ID}
-		sampgo.GivePlayerMoney(p.ID, players[p.ID].GetMoney())
+		playerName := p.GetName()
+
+		_, exists := players[playerName]
+		if !exists {
+			players[playerName] = &Roleplayer{Money: 1000, Exp: rand.Intn(10)}
+		}
+		players[playerName].SetID(p.ID)
+		sampgo.GivePlayerMoney(p.ID, players[playerName].GetMoney())
 
 		p.SendMessage(ColorWhite, "Welcome to the server!")
-		p.SendMessage(ColorWhite, fmt.Sprintf("You have $%d!", players[p.ID].GetMoney()))
-		p.SendMessage(ColorWhite, fmt.Sprintf("Your exp is %d!", players[p.ID].GetExp()))
-		p.SendMessage(ColorWhite, fmt.Sprintf("Your level is %d!", players[p.ID].GetLevel()))
-		sampgo.SetPlayerScore(p.ID, players[p.ID].GetLevel())
-
+		p.SendMessage(ColorWhite, fmt.Sprintf("You have $%d!", players[playerName].GetMoney()))
+		p.SendMessage(ColorWhite, fmt.Sprintf("Your exp is %d!", players[playerName].GetExp()))
+		p.SendMessage(ColorWhite, fmt.Sprintf("Your level is %d!", players[playerName].GetLevel()))
+		sampgo.SetPlayerScore(p.ID, players[playerName].GetLevel())
 		return true
 	})
 
@@ -130,22 +182,19 @@ func init() {
 
 	sampgo.On("playerDisconnect", func(p sampgo.Player, reason int) bool {
 		sampgo.Print(fmt.Sprintf("Player %s disconnected!", p.GetName()))
-		delete(players, p.ID)
+		writeJSONToFile(&players, "data/players.json")
 		return true
 	})
 
 	sampgo.On("playerDeath", func(victim sampgo.Player, killer sampgo.Player, reason int) bool {
 		sampgo.Print(fmt.Sprintf("Player %s died!", victim.GetName()))
-		players[victim.ID].RemoveMoney(100)
+		players[victim.GetName()].RemoveMoney(100)
 		victim.SendMessage(ColorWhite, "you died get rekt noob")
 		victim.SetPos(-3, 3, 5)
 		sampgo.SetPlayerHealth(victim.ID, 100)
 		victim.Spawn()
 
-		json, _ := json.Marshal(players)
-		sampgo.Print(string(json))
-
-		killerRP, exists := players[killer.ID]
+		killerRP, exists := players[killer.GetName()]
 		if !exists {
 			return true
 		}
