@@ -31,12 +31,14 @@ func init() {
 					ctx.Player.SendMessage(ColorRed, "[ERROR] Invalid vehicle ID!")
 					return
 				}
-				veh := sampgo.CreateVehicle(id, plX, plY, plZ, 0, rand.Intn(256), rand.Intn(256), 30, true)
-				if veh == sampgo.InvalidVehicleId {
+				veh, err := sampgo.NewVehicle(id, plX, plY, plZ, 0, uint8(rand.Intn(256)), uint8(rand.Intn(256)), 30, true)
+				if err != nil {
 					ctx.Player.SendMessage(ColorRed, "Unable to spawn car!")
+					return
 				}
-				sampgo.PutPlayerInVehicle(ctx.Player.ID, veh, 0)
-				msg := fmt.Sprintf("Vehicle id %d created", veh)
+				veh.PutPlayer(&ctx.Player, 0)
+				sampgo.SetVehicleNumberPlate(veh.ID, "URMOM")
+				msg := fmt.Sprintf("Vehicle id %d created", veh.ID)
 				sampgo.Print(msg)
 				ctx.Player.SendMessage(ColorWhite, msg)
 
@@ -69,6 +71,30 @@ func init() {
 				sampgo.Print(msg)
 				ctx.Player.SendMessage(ColorWhite, msg)
 				return
+			})
+
+		gommand.NewCompleteCommand("fix", []string{"vfix"},
+			func(ctx gommand.Context) (err error) {
+				sampgo.RepairVehicle(sampgo.GetPlayerVehicleID(ctx.Player.ID))
+				return
+			})
+
+		gommand.NewCompleteCommand("flip", []string{},
+			func(ctx gommand.Context) error {
+				sampgo.SetVehicleZAngle(sampgo.GetPlayerVehicleID(ctx.Player.ID), 0)
+				return nil
+			})
+
+		gommand.NewCompleteCommand("respawn", []string{},
+			func(ctx gommand.Context) error {
+				ctx.Player.SetPos(-3, 3, 5)
+				return nil
+			})
+
+		gommand.NewCompleteCommand("jetpack", []string{"jp"},
+			func(ctx gommand.Context) error {
+				sampgo.SetPlayerSpecialAction(ctx.Player.ID, sampgo.SpecialActionUsejetpack)
+				return nil
 			})
 
 		sampgo.Print("commands registered!")
